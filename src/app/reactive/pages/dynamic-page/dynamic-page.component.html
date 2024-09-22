@@ -1,13 +1,17 @@
 <h2>Reactivos: <small> Dinámicos </small></h2>
 <hr>
 
-<form autocomplete="off">
+<form 
+[formGroup]="myForm"
+(ngSubmit)="onSubmit()"
+autocomplete="off">
 
     <!-- Nombre -->
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Nombre</label>
         <div class="col-sm-9">
             <input class="form-control"
+            formControlName="name"
                    placeholder="Nombre de la persona">
             <span class="form-text text-danger">
                    error message
@@ -22,11 +26,15 @@
 
             <div class="input-group">
                 <input class="form-control"
-                       placeholder="Agregar favorito">
+                       placeholder="Agregar favorito"
+                       [formControl]="newFavorite"
+                       >
 
 
                 <button class="btn btn-outline-primary"
-                        type="button">
+                        type="button"
+                        (click)="addFavorites()"
+                        >
                     Agregar favorito
                 </button>
             </div>
@@ -37,23 +45,30 @@
     <!-- Lista de Juegos Favoritos -->
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Favoritos</label>
-        <div class="col-sm-9">
-
+        <div
+         class="col-sm-9"  
+         formArrayName="favoriteGames"
+        >
+        @for (favorite of favoriteGames.controls; track $index) {
             <div class="mb-1">
-
                 <div class="input-group">
-                    <input class="form-control">
+                    <input 
+                    [formControlName]="$index"
+                    class="form-control">
 
                     <button class="btn btn-outline-danger"
-                            type="button">
+                            type="button"
+                            (click)="onDeleteFavorite($index)"
+                            >
                       Eliminar
                   </button>
                 </div>
                 <span class="form-text text-danger">
                    Este campo es requerido
                 </span>
-
             </div>
+        }
+           
 
         </div>
     </div>
